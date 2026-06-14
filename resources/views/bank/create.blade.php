@@ -1,6 +1,12 @@
 @extends('layout')
 @section('content')
     <h1 class="text-center text-primary fw-bold">Create Bank Details</h1>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <form method="POST" action="{{ route('bank.store') }}">
         @csrf
         <div class="mb-3">

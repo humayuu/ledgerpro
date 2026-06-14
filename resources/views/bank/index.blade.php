@@ -1,5 +1,12 @@
 @extends('layout')
 @section('content')
+    <h1 class="text-center text-primary fw-bold">Bank Details</h1>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <table class="table">
         <div class="d-flex justify-content-end">
             <a href="{{ route('bank.create') }}" class="btn btn-primary m-3">Create Account</a>
@@ -29,8 +36,15 @@
                                 class="fa-solid fa-eye"></i></a>
                         <a class="btn btn-dark" href="{{ route('bank.edit', $bank->id) }}"><i
                                 class="fa-solid fa-pen-to-square"></i></a>
-                        <a class="btn btn-danger" href="{{ route('bank.destroy', $bank->id) }}"><i
-                                class="fa-solid fa-trash"></i></a>
+                        <form method="POST" action="{{ route('bank.destroy', $bank->id) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="if(confirm('Are you sure?')) this.closest('form').submit()"
+                                class="btn btn-danger">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+
                     </td>
                 </tr>
             @empty
