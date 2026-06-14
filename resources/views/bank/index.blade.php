@@ -29,8 +29,8 @@
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>{{ $bank->name }}</td>
                     <td>{{ $bank->account_title }}</td>
-                    <td>{{ $bank->monthly_limit }}</td>
-                    <td>{{ $bank->weekly_cash_limit }}</td>
+                    <td>{{ number_format($bank->monthly_limit) }}</td>
+                    <td>{{ number_format($bank->weekly_cash_limit) }}</td>
                     <td class="d-flex justify-content-center gap-2">
                         <a class="btn btn-primary" href="{{ route('bank.show', $bank->id) }}"><i
                                 class="fa-solid fa-eye"></i></a>
@@ -54,4 +54,5 @@
             @endforelse
         </tbody>
     </table>
+    {{ $banks->links() }}
 @endsection

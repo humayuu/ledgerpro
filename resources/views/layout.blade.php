@@ -29,14 +29,21 @@
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="{{ route('bank.index') }}" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Bank</span>
+                            <a href="#" class="nav-link align-middle px-0 text-white">
+                                <i class="fa-solid fa-gauge fs-4"></i> <span
+                                    class="ms-1 d-none d-sm-inline">Dashboard</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link align-middle px-0">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Account
-                                    Details</span>
+                            <a href="{{ route('bank.index') }}" class="nav-link align-middle px-0 text-white">
+                                <i class="fa-solid fa-building-columns fs-4"></i> <span
+                                    class="ms-1 d-none d-sm-inline">Banks</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('transaction.index') }}" class="nav-link align-middle px-0 text-white">
+                                <i class="fa-solid fa-money-bill-transfer fs-4"></i> <span
+                                    class="ms-1 d-none d-sm-inline">Transactions</span>
                             </a>
                         </li>
                     </ul>

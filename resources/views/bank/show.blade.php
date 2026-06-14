@@ -39,18 +39,6 @@
                 <a href="{{ route('bank.index') }}" class="btn btn-secondary">
                     <i class="fa-solid fa-arrow-left me-1"></i> Back
                 </a>
-                <div>
-                    <a href="{{ route('bank.edit', $bank->id) }}" class="btn btn-warning">
-                        <i class="fa-solid fa-pen-to-square me-1"></i> Edit
-                    </a>
-                    <form action="{{ route('bank.destroy', $bank->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">
-                            <i class="fa-solid fa-trash me-1"></i> Delete
-                        </button>
-                    </form>
-                </div>
             </div>
         </div>
     </div>

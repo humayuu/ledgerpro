@@ -13,7 +13,7 @@ class BankController extends Controller
      */
     public function index()
     {
-        $banks = Bank::with(['transactions'])->get();
+        $banks = Bank::with(['transactions'])->paginate(10);
         return view('bank.index', compact('banks'));
     }
 

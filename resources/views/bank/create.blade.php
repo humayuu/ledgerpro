@@ -38,7 +38,7 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label for="weekly_cash_limit" class="form-label">Monthly Cash Limit</label>
+            <label for="weekly_cash_limit" class="form-label">Weekly Cash Limit</label>
             <input type="number" class="form-control" name="weekly_cash_limit">
             @error('weekly_cash_limit')
                 <span class="text-danger">{{ $message }}</span>
