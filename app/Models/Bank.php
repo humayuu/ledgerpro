@@ -9,34 +9,65 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable('name', 'account_title', 'account_number', 'monthly_limit', 'weekly_cash_limit')]
 class Bank extends Model
 {
+    protected $casts = [
+        'monthly_limit' => 'decimal:2',
+        'weekly_cash_limit' => 'decimal:2',
+    ];
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
     }
 
-    // Current month total credit
-    public function monthlyCreditTotal($month = null, $year = null)
+    public function currentMonthCredit(?Carbon $date = null): float
     {
-        $month = $month ?? now()->month;
-        $year = $year ?? now()->year;
+        $date = $date ?? now();
 
-        return $this->transactions()
+        return (float) $this->transactions()
             ->where('type', 'credit')
-            ->whereMonth('date', $month)
-            ->whereYear('date', $year)
+            ->whereYear('date', $date->year)
+            ->whereMonth('date', $date->month)
             ->sum('amount');
     }
 
-    // Current week cash withdrawal total
-    public function weeklyCashWithdrawalTotal($date = null)
+    public function currentWeekCashWithdrawal(?Carbon $date = null): float
     {
-        $date = $date ? Carbon::parse($date) : now();
-        $startOfWeek = $date->copy()->startOfWeek();
-        $endOfWeek = $date->copy()->endOfWeek();
+        $date = $date ?? now();
+        $start = $date->copy()->startOfWeek();
+        $end = $date->copy()->endOfWeek();
 
-        return $this->transactions()
+        return (float) $this->transactions()
             ->where('type', 'cash_withdrawal')
-            ->whereBetween('date', [$startOfWeek, $endOfWeek])
+            ->whereBetween('date', [$start, $end])
             ->sum('amount');
+    }
+
+    public function currentMonthTransfer(?Carbon $date = null): float
+    {
+        $date = $date ?? now();
+
+        return (float) $this->transactions()
+            ->where('type', 'bank_transfer')
+            ->whereYear('date', $date->year)
+            ->whereMonth('date', $date->month)
+            ->sum('amount');
+    }
+
+    public function monthlyCreditUsagePercent(?Carbon $date = null): float
+    {
+        if (! $this->monthly_limit) {
+            return 0;
+        }
+
+        return min(100, ($this->currentMonthCredit($date) / $this->monthly_limit) * 100);
+    }
+
+    public function weeklyCashUsagePercent(?Carbon $date = null): float
+    {
+        if (! $this->weekly_cash_limit) {
+            return 0;
+        }
+
+        return min(100, ($this->currentWeekCashWithdrawal($date) / $this->weekly_cash_limit) * 100);
     }
 }

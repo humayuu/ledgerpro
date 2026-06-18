@@ -7,12 +7,18 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    <table class="table">
-        <div class="d-flex justify-content-end">
-            <a href="{{ route('bank.create') }}" class="btn btn-primary m-3">Create Account</a>
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    @endif
+    <div class="d-flex justify-content-end">
+        <a href="{{ route('bank.create') }}" class="btn btn-primary m-3">Create Account</a>
+    </div>
+    <table class="table table-hover">
         @if ($banks->count() > 0)
-            <thead>
+            <thead class="table-dark">
                 <tr class="text-center">
                     <th scope="col">#</th>
                     <th scope="col">Bank</th>
@@ -26,31 +32,30 @@
         <tbody>
             @forelse ($banks as $bank)
                 <tr class="text-center">
-                    <th scope="row">{{ $loop->iteration }}</th>
+                    <th scope="row">{{ $loop->iteration + ($banks->currentPage() - 1) * $banks->perPage() }}</th>
                     <td>{{ $bank->name }}</td>
                     <td>{{ $bank->account_title }}</td>
                     <td>{{ number_format($bank->monthly_limit) }}</td>
                     <td>{{ number_format($bank->weekly_cash_limit) }}</td>
                     <td class="d-flex justify-content-center gap-2">
-                        <a class="btn btn-primary" href="{{ route('bank.show', $bank->id) }}"><i
-                                class="fa-solid fa-eye"></i></a>
-                        <a class="btn btn-dark" href="{{ route('bank.edit', $bank->id) }}"><i
-                                class="fa-solid fa-pen-to-square"></i></a>
-                        <form method="POST" action="{{ route('bank.destroy', $bank->id) }}">
+                        <a class="btn btn-primary btn-sm" href="{{ route('bank.show', $bank) }}"><i class="fa-solid fa-eye"></i></a>
+                        <a class="btn btn-dark btn-sm" href="{{ route('bank.edit', $bank) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <form method="POST" action="{{ route('bank.destroy', $bank) }}">
                             @csrf
                             @method('DELETE')
                             <button type="button" onclick="if(confirm('Are you sure?')) this.closest('form').submit()"
-                                class="btn btn-danger">
+                                class="btn btn-danger btn-sm">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>
-
                     </td>
                 </tr>
             @empty
-                <div class="alert alert-info mt-4">
-                    No Record Found!
-                </div>
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-info mt-4 mb-0 text-center">No Record Found!</div>
+                    </td>
+                </tr>
             @endforelse
         </tbody>
     </table>

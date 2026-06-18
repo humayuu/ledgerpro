@@ -9,6 +9,13 @@
         </div>
     @endif
 
+    @if (session('warning'))
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-triangle-exclamation me-1"></i> {{ session('warning') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('transaction.store') }}">
         @csrf
 
@@ -17,7 +24,7 @@
             <select class="form-select" name="bank_id" id="bank_id" autofocus>
                 <option value="">-- Select Bank --</option>
                 @foreach ($banks as $bank)
-                    <option value="{{ $bank->id }}" {{ old('bank_id') == $bank->id ? 'selected' : '' }}>
+                    <option value="{{ $bank->id }}" {{ old('bank_id', request('bank_id')) == $bank->id ? 'selected' : '' }}>
                         {{ $bank->name }} ({{ $bank->account_title }})
                     </option>
                 @endforeach

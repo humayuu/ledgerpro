@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('banks', function (Blueprint $table) {
@@ -16,15 +13,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('account_title');
             $table->string('account_number');
-            $table->integer('monthly_limit');
-            $table->integer('weekly_cash_limit');
+            $table->decimal('monthly_limit', 15, 2)->default(700000);
+            $table->decimal('weekly_cash_limit', 15, 2)->default(950000);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('banks');

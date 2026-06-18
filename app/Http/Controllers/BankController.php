@@ -13,7 +13,7 @@ class BankController extends Controller
      */
     public function index()
     {
-        $banks = Bank::with(['transactions'])->paginate(10);
+        $banks = Bank::latest('id')->paginate(10);
         return view('bank.index', compact('banks'));
     }
 
@@ -42,7 +42,8 @@ class BankController extends Controller
      */
     public function show(Bank $bank)
     {
-        $bank->load('transactions');
+        $bank->load(['transactions' => fn ($q) => $q->with('transferToBank')->latest('date')]);
+
         return view('bank.show', compact('bank'));
     }
 
